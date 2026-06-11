@@ -249,15 +249,13 @@ export default async function (pi: ExtensionAPI) {
       const wsClient = new sdk.WSClient({
         appId: config.appId,
         appSecret: config.appSecret,
-        loggerLevel: sdk.LoggerLevel.info,
+        loggerLevel: sdk.LoggerLevel.error,
       });
 
       // 注册消息处理器
       wsClient.start({
         eventDispatcher: new sdk.EventDispatcher({}).register({
           "im.message.receive_v1": async (data: any) => {
-            console.log("[feishu] 收到原始事件数据:", JSON.stringify(data, null, 2));
-            
             // SDK 回调 data 结构：data.message 直接在顶层，不是 data.event.message
             const message = data?.message;
             if (!message) {
@@ -290,8 +288,6 @@ export default async function (pi: ExtensionAPI) {
             }
 
             if (!text.trim()) return;
-
-            console.log(`[feishu] 收到消息: ${text}`);
 
             // 发送给 pi 处理
             pi.sendUserMessage(`[飞书消息] ${text}`);
@@ -363,7 +359,7 @@ export default async function (pi: ExtensionAPI) {
         },
         params: { receive_id_type: "chat_id" },
       });
-      console.log("[feishu] 已回复飞书消息");
+      // 已回复飞书消息
     } catch (error) {
       console.error("[feishu] 回复失败:", error);
     }

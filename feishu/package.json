@@ -1,0 +1,7 @@
+{
+  "name": "pi-feishu-bot",
+  "private": true,
+  "dependencies": {
+    "@larksuiteoapi/node-sdk": "^1.35.0"
+  }
+}
